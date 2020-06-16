@@ -8,4 +8,4 @@ This is test implementation of Netty socket communication. In the documentation 
  // need to specify a group.<br />
  pipeline.addLast(group, "handler", new MyBusinessLogicHandler());<br />
  
-But 
+But the handler work only in one thread.
