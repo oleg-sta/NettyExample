@@ -15,6 +15,7 @@ import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 
 import java.net.InetSocketAddress;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -38,6 +39,7 @@ public class Main {
     private static void startServer() throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
         final EventLoopGroup childGroup = new NioEventLoopGroup(5);
+        // we expect that this worker group should handle message in multithreaded way without blocking main thread
         final DefaultEventExecutorGroup workerGroup = new DefaultEventExecutorGroup(5);
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
@@ -106,7 +108,7 @@ public class Main {
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             ByteBuf inBuffer = (ByteBuf) msg;
             String received = inBuffer.toString(CharsetUtil.UTF_8);
-            System.out.println("Server received: " + received + " Thread name " + Thread.currentThread().getName());
+            System.out.println("Server received: " + received + " Thread name " + Thread.currentThread().getName() + " time: " + new Date());
             Thread.sleep(1000);
             System.out.println("Server received end: " + received);
         }
